@@ -1,0 +1,9 @@
+Options -Indexes
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond $1 !^(css|js|models|views|images|controller|fonts|robots\.txt)
+
+RewriteRule ^(.+)$ index.html/$1 [L]

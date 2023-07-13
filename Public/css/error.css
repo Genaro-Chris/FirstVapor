@@ -1,0 +1,11 @@
+.error-div {
+    width: 650px;
+    height: 40px;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-left: auto;
+    background: white;
+    border-radius: 3px;
+    border: 1px solid #fff;
+}
