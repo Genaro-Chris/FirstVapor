@@ -83,6 +83,9 @@ final class CompleteUser: Model, Content {
     @Field(key: "tel")
     var telephone: UInt64
 
+    @OptionalParent(key: "user")
+    var user: User?
+
     init() {}
 
     init(from decoder: Decoder) throws {

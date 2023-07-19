@@ -10,6 +10,10 @@ struct UserController: RouteCollection {
     func create(request: Request) async throws -> Response {
         let user = try request.content.decode(User.self)
         let user_details = try request.content.decode(LoginProfile.self)
+        guard user_details.password == user.con_password else {
+            request.logger.error("Passwords mismatch")
+            throw Abort(.internalServerError)
+        }
         try await user_details.save(on: request.db)
         guard let id = user_details.id else {
             throw Abort(.noContent)

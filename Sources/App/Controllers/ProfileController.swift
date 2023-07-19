@@ -17,10 +17,10 @@ struct ProfileController: RouteCollection {
         else {
             throw Abort(.notFound)
         }
-        guard let user = try await User.query(on: request.db).filter(\User.$details.$id == id).first() else {
+        guard let user = try await User.query(on: request.db).with(\User.$details).filter(\User.$details.$id == id).first() else {
             throw Abort(.noContent)
         }
-        try await user.$details.load(on: request.db)
+        //try await user.$details.load(on: request.db)
         request.session.data["username"] = user.username
         request.session.data["email"] = user.details.email
         return request.redirect(to: "/")

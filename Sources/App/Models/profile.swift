@@ -18,16 +18,15 @@ final class LoginProfile: Content, Model {
     @Field(key: "password")
     var password: String
 
-    /* @OptionalChild(for: \User.$details)
-    var user: User? */
+    @OptionalChild(for: \User.$details)
+    var user: User?
 
     init() {}
 
-    init(id: UUID? = nil, email: String, password: String) {
+    init(email: String, password: String) {
         self.email = email
         self.id = id
         self.password = password
-        //self.$user.wrappedValue?.id = user_id
     }
 }
 

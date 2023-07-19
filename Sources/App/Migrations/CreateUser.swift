@@ -6,7 +6,8 @@ struct CreateUser: AsyncMigration {
             .id()
             .field("username", .string)
             .unique(on: "username")
-            .field("details", .uuid, .required, .references(LoginProfile.schema, "id"))
+            .field("credentials", .uuid, .required, .references(LoginProfile.schema, "id"))
+            .field("details", .uuid, .references(CompleteUser.schema, "id"))
             .create()
     }
 

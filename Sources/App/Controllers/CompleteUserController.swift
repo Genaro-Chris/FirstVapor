@@ -10,16 +10,24 @@ struct CompleteUserController: RouteCollection {
 
     func create(request: Request) async throws -> Response {    
         let complete = try request.content.decode(CompleteUser.self)
-        guard !request.hasSession else {
+        guard request.hasSession else {
             throw Abort(.noContent)
         }
-        if let email = request.session.data["email"] {
-            let profile = try await LoginProfile.query(on: request.db).filter(\LoginProfile.$email ~= email).first()
-            print(profile!)
+        guard let email = request.session.data["email"] else {
+             throw Abort(.internalServerError)
+
         }        
-        request.session.data["fullname"] = complete.fullname    
+        guard let id = try await LoginProfile.query(on: request.db).filter(\LoginProfile.$email ~= email).first()?.id else {
+            throw Abort(.noContent)
+        }
+        guard let user = try await User.query(on: request.db).with(\User.$details).filter(\User.$details.$id == id).first() else {
+            throw Abort(.notFound)
+        }
+        complete.$user.id = user.id
         try await complete.save(on: request.db)
+        request.session.data["fullname"] = complete.fullname    
         return request.redirect(to: "/")
+       
     }
 
     func index(request: Request) async throws -> [CompleteUser] {

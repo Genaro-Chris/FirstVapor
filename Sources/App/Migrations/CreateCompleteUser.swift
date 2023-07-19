@@ -22,6 +22,7 @@ struct CreateCompleteUser: AsyncMigration {
             .field("dob", .date, .required)
             .field("age", .uint8, .required)
             .field("tel", .uint64, .required)
+            .field("user", .uuid, .references(User.schema, "id"))
             .create()
     }
 

@@ -1,5 +1,5 @@
 import Fluent
-import FluentPostgresDriver
+import FluentSQLiteDriver
 import Leaf
 import NIOSSL
 import Vapor
@@ -13,24 +13,15 @@ public func configure(_ app: Application) async throws {
             directoryAction: .redirect))
 
 
-        app.databases.use(.postgres(configuration: SQLPostgresConfiguration(
-        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-        port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? SQLPostgresConfiguration.ianaPortNumber,
-        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-        database: Environment.get("DATABASE_NAME") ?? "vapor_database",
-        tls: .disable)
-    ), as: .psql)
-
+    app.databases.use(.sqlite(.file(app.directory.publicDirectory + "database.db")), as: .sqlite)
 
     //app.migrations.add(CreateDepartment())
 
-    app.migrations.add(CreateProfile())
+    
     app.migrations.add(CreateUser())
     app.migrations.add(CreateCompleteUser())
     app.migrations.add(CreateAppointment())
-    
-    
+    app.migrations.add(CreateProfile())
     
     
     try await app.autoMigrate()

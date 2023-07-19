@@ -11,8 +11,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/vapor.git", from: "4.76.0"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.8.0"),
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.7.2"),
-        .package(path: "/home/genaro/Languages/Swift/cache/SignalHandler")
+        .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0"),
 
     ],
     targets: [
@@ -22,9 +21,7 @@ let package = Package(
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Vapor", package: "vapor"),
-                .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
-                "SignalHandler"
-
+                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver")
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

@@ -1,11 +1,10 @@
 import Dispatch
 import Logging
-import SignalHandler
 import Vapor
 
 /// This extension is temporary and can be removed once Vapor gets this support.
 extension Vapor.Application {
-    fileprivate static let baseExecutionQueue = DispatchQueue(label: "vapor.codes.entrypoint")
+    fileprivate static let baseExecutionQueue = DispatchQueue(label: "vapor.codes.entrypoint", attributes: .concurrent)
 
     fileprivate func runFromAsyncMainEntrypoint() async throws {
         try await withCheckedThrowingContinuation { continuation in

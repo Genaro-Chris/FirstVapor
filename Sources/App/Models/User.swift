@@ -19,7 +19,7 @@ final class User: Content, Model {
     @ID
     var id: UUID?
 
-    @Parent(key: "details")
+    @Parent(key: "credentials")
     var details: LoginProfile
 
     @Field(key: "username")
@@ -28,6 +28,9 @@ final class User: Content, Model {
     @Children(for: \Appointment.$user)
     var appointments: [Appointment]
 
+    @OptionalChild(for: \CompleteUser.$user)
+    var complete: CompleteUser?
+
     var con_password: String = ""
 
     init() {}
@@ -35,12 +38,12 @@ final class User: Content, Model {
     init(
         id: UUID? = nil, username: String,
         con_password: String = "",
-        details_id: LoginProfile.IDValue
-    ) {
+        credentials_id: LoginProfile.IDValue
+        ) {
         self.id = id
         self.username = username
         self.con_password = con_password
-        self.$details.id = details_id
+        self.$details.id = credentials_id
     }
 }
 

@@ -25,7 +25,7 @@ final class Appointment: Model, Content {
         let date_string = try container.decode(String.self, forKey: .appointment_date)
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        appointment_date = formatter.date(from: date_string)
+        appointment_date = formatter.date(from: date_string) ?? .now
         fullname = try container.decode(String.self, forKey: .fullname)
         dept = try container.decode(Department.self, forKey: .department)
     }
@@ -47,7 +47,7 @@ final class Appointment: Model, Content {
     var dept: Department
 
     @Field(key: "date")
-    var appointment_date: Date?
+    var appointment_date: Date
 
     @Field(key: "telephone")
     var telephone: UInt
@@ -65,7 +65,7 @@ final class Appointment: Model, Content {
     }
 
     var description: String {
-        fullname + "\n" + "\(telephone)"  + "\n" + "\(appointment_date?.description  ?? "")" + "" + "\n" + "\(dept.rawValue)"
+        fullname + "\n" + "\(telephone)"  + "\n" + "\(appointment_date.description)" + "" + "\n" + "\(dept.rawValue)"
     }
 
 }

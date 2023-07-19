@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php require_once('./controller/form_helper.php') ?>
 
 <head>
 
@@ -31,12 +30,7 @@ http://www.tooplate.com/view/2098-health
 
 </head>
 
-<script>
-     function sent() {
-          alert("Check email for more details");
-          window.location.href = "index.php"
-     }
-</script>
+
 
 <body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
 
@@ -47,7 +41,6 @@ http://www.tooplate.com/view/2098-health
           </div>
      </section>
 
-     <?php Redirecter() ?>
      <!-- HEADER -->
      <header>
           <div class="container">
@@ -67,10 +60,7 @@ http://www.tooplate.com/view/2098-health
           </div>
      </header>
 
-
-     <?php
-     include('./views/menu.php');
-     ?>
+>
 
      <!-- MAKE AN APPOINTMENT -->
      <section id="appointment" data-stellar-background-ratio="3">
@@ -81,7 +71,6 @@ http://www.tooplate.com/view/2098-health
                     </div>
 
                     <div>
-                         <?php alertMsg() ?>
                     </div>
 
 
@@ -89,7 +78,6 @@ http://www.tooplate.com/view/2098-health
                          <!-- CONTACT FORM HERE -->
                          <form id="appointment-form" role="form" method="post" action="#">
                               <div>
-                                   <?php alertMsg() ?>
                               </div>
 
                               <!-- SECTION TITLE -->
@@ -105,7 +93,7 @@ http://www.tooplate.com/view/2098-health
 
                                    <div class="col-md-6 col-sm-6">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" value="<?php echo session_get("email") ?>" required>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
                                    </div>
 
                                    <div class="col-md-6 col-sm-6">
@@ -126,7 +114,7 @@ http://www.tooplate.com/view/2098-health
                                         <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone" required>
                                         <label for="Message">Additional Message</label>
                                         <textarea class="form-control" rows="5" id="message" name="message" placeholder="Message"></textarea>
-                                        <button type="submit" class="form-control" id="cf-submit" name="submit" onclick="sent()">Make appointment</button>
+                                        <button type="submit" class="form-control" id="cf-submit" name="submit">Make appointment</button>
                                    </div>
                               </div>
                          </form>
@@ -137,9 +125,7 @@ http://www.tooplate.com/view/2098-health
      </section>
 
      <!-- FOOTER -->
-     <?php
-     include('./views/footer.php');
-     ?>
+
 
 
 
