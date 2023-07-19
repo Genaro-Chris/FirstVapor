@@ -18,9 +18,6 @@ final class LoginProfile: Content, Model {
     @Field(key: "password")
     var password: String
 
-    @OptionalChild(for: \User.$details)
-    var user: User?
-
     init() {}
 
     init(email: String, password: String) {

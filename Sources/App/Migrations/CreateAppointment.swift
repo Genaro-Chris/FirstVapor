@@ -18,6 +18,7 @@ struct CreateAppointment: AsyncMigration {
             .field("email", .string, .required)
             .field("telephone", .uint64, .required)
             .field("user", .uuid, .references(User.schema, "id"))
+            .unique(on: "name", "email", "date", "department")
             .create()
     }
 

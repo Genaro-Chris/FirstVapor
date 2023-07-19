@@ -17,11 +17,11 @@ public func configure(_ app: Application) async throws {
 
     //app.migrations.add(CreateDepartment())
 
-    
+    app.migrations.add(CreateProfile())
     app.migrations.add(CreateUser())
     app.migrations.add(CreateCompleteUser())
     app.migrations.add(CreateAppointment())
-    app.migrations.add(CreateProfile())
+   
     
     
     try await app.autoMigrate()
