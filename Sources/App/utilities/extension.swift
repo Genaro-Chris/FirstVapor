@@ -1,6 +1,6 @@
 import Foundation
 extension Sequence {
-    func forEach(body: (Element) async throws -> ()) async rethrows {
+    func forEach(body: (Element) async throws -> ()) async throws  {
         for value in self {
             try await body(value)
         }

@@ -25,7 +25,10 @@ final class Appointment: Model, Content {
         let date_string = try container.decode(String.self, forKey: .appointment_date)
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        appointment_date = formatter.date(from: date_string) ?? .now
+        guard let date = formatter.date(from: date_string) else {
+            throw ConversionError.invalidDate
+        }
+        appointment_date = date
         fullname = try container.decode(String.self, forKey: .fullname)
         dept = try container.decode(Department.self, forKey: .department)
     }
@@ -69,3 +72,15 @@ final class Appointment: Model, Content {
     }
 
 }
+
+
+extension Appointment: Validatable {
+
+    static func validations(_ validations: inout Validations) {
+        validations.add("fullname", as: String.self, is: .ascii, required: true)
+        validations.add("email", as: String.self, is: .email && .internationalEmail, required: true)
+        validations.add("telephone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true)
+    }
+}
+
+

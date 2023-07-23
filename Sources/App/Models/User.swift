@@ -53,3 +53,10 @@ extension User: CustomStringConvertible {
         username + "\n" + "\(details.description)" + con_password
     }
 }
+
+extension User: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("username", as: String.self, is: !.empty, required: true)
+        validations.add("con-password", as: String.self, is: .strongPassword, required: true, customFailureDescription: "Must contain an uppercase, lowercase, a number and at least a special character and no less than 8 characters")
+    }
+}

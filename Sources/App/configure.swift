@@ -21,6 +21,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateUser())
     app.migrations.add(CreateCompleteUser())
     app.migrations.add(CreateAppointment())
+    app.migrations.add(SessionRecord.migration)
    
     
     

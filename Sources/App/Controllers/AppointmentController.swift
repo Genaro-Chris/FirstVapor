@@ -11,6 +11,7 @@ struct AppointmentController: RouteCollection {
     }
 
     func create(request: Request) async throws -> Response {
+        try Appointment.validate(content: request)
         let appointment = try request.content.decode(Appointment.self)
         let users_details = try await User.query(on: request.db).with(\User.$complete).all()
         let users = try await User.query(on: request.db).with(\User.$details).all()

@@ -95,11 +95,23 @@ final class CompleteUser: Model, Content {
         let date_string = try container.decode(String.self, forKey: .dob)
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        dob = formatter.date(from: date_string)!
+        guard let date = formatter.date(from: date_string) else {
+            throw ConversionError.invalidDate
+        }
+        dob = date
         age = try container.decode(UInt8.self, forKey: .age)
         state = try container.decode(State.self, forKey: .state)
         gender = try container.decode(Gender.self, forKey: .gender)
         blood_group = try container.decode(Blood_Group.self, forKey: .blood_group)
         genotype = try container.decode(Genotype.self, forKey: .genotype)
+    }
+}
+
+
+extension CompleteUser: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("age", as: UInt8.self, is: .range(18...), customFailureDescription: "User must be 18 and above")
+        validations.add("telephone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true, customFailureDescription: "Invalid phone number")
+        validations.add("fullname", as: String.self, is: .count(4...) && !.empty, required: true)
     }
 }

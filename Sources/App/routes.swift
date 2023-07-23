@@ -6,12 +6,12 @@ func routes(_ app: Application) throws {
         try await req.view.render("index", ["title": "Hello Vapor!"])
     } */
     let cors = CORSMiddleware.init(configuration: .init(allowedOrigin: .all, allowedMethods: [], allowedHeaders: []))
-    app.middleware.use(cors)
+    app.middleware.use(cors, at: .beginning)
 
-    app.sessions.use(.memory)
+    app.sessions.use(.fluent(.sqlite))
     app.sessions.configuration.cookieName = "SESSION"
     app.sessions.configuration.cookieFactory = { idval  -> HTTPCookies.Value in 
-        .init(string: idval.string, isSecure: true, isHTTPOnly: true, sameSite: HTTPCookies.SameSitePolicy.none)
+        .init(string: idval.string, expires: .now + TimeInterval(exactly: 60)!, isSecure: true, isHTTPOnly: true, sameSite: HTTPCookies.SameSitePolicy.none)
     }
     app.middleware.use(app.sessions.middleware)
     try app.register(collection: ProfileController())

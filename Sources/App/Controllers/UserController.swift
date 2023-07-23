@@ -8,12 +8,15 @@ struct UserController: RouteCollection {
     }
 
     func create(request: Request) async throws -> Response {
+        try User.validate(content: request)
+        try LoginProfile.validate(content: request)
         let user = try request.content.decode(User.self)
         let user_details = try request.content.decode(LoginProfile.self)
         guard user_details.password == user.con_password else {
             request.logger.error("Passwords mismatch")
-            throw Abort(.internalServerError)
+            throw Abort(.internalServerError, reason: "Password mismatch")
         }
+        user_details.password = try Bcrypt.hash(user_details.password)
         try await user_details.save(on: request.db)
         guard let id = user_details.id else {
             throw Abort(.noContent)

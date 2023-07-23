@@ -76,7 +76,7 @@ http://www.tooplate.com/view/2098-health
 
 
                                         <button type="submit" class="form-control" id="cf-submit" name="register">Login</button>
-                                        New User? <a href="./register.php"> Register</a>
+                                        New User? <a href="./register.html"> Register</a>
 
                                    </div>
                               </div>
