@@ -1,8 +1,8 @@
 import Fluent
 
 struct CreateCompleteUser: AsyncMigration {
-    func prepare(on database: Database) async throws { 
-        /* 
+    func prepare(on database: Database) async throws {
+        /*
         // Only this if you didn't @Enum(key: ) attributes
         try await create(from: "gender", with: Gender.self, db: database)
         try await create(from: "genotype", with: Genotype.self, db: database)
@@ -41,5 +41,3 @@ func create(from: String, with: (some CaseIterableWithRawValues).Type, db: Datab
     }
     _ = try await enumBuilder.create()
 }
-
-

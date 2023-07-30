@@ -3,11 +3,20 @@ import Vapor
 
 struct AppointmentController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let appointment_routes = routes.grouped("api", "appointment")
+        let redirectMiddleware = LoginProfile.redirectMiddleware { req in
+            req.session.redirectTo = req.url.path
+            return "/login"
+        }
+        let appointment_routes = routes.grouped("api", "appointment").grouped(
+            LoginProfile.authenticator()
+        )
+        .grouped(
+            LoginProfile.asyncSessionAuthenticator()
+        ).grouped(redirectMiddleware)
         appointment_routes.post(use: create)
         appointment_routes.get(use: self.index)
         appointment_routes.get("appointment", ":id", use: getIndexOf)
-        appointment_routes.get(":id",use: getIndex)
+        appointment_routes.get(":id", use: getIndex)
     }
 
     func create(request: Request) async throws -> Response {
@@ -15,13 +24,15 @@ struct AppointmentController: RouteCollection {
         let appointment = try request.content.decode(Appointment.self)
         let users_details = try await User.query(on: request.db).with(\User.$complete).all()
         let users = try await User.query(on: request.db).with(\User.$details).all()
-        guard let user = users.first(where: { $0.details.email == appointment.email }), let _ = users_details.first(where: { $0.complete?.fullname == appointment.fullname }) else {
+        guard let user = users.first(where: { $0.details.email == appointment.email }),
+            users_details.first(where: { $0.complete?.fullname == appointment.fullname }) != nil
+        else {
             throw Abort(.notFound)
         }
         appointment.$user.id = user.id
         let value = try await appointment.$user.get(on: request.db)
         try await value?.$appointments.create([appointment], on: request.db)
-        //try await appointment.save(on: request.db)
+        // try await appointment.save(on: request.db)
         return request.redirect(to: "/")
     }
 
@@ -49,13 +60,11 @@ struct AppointmentController: RouteCollection {
         guard !users.isEmpty else {
             throw Abort(.noContent)
         }
-        let appointments = users.map( {
-           $0.appointments.map(AppointmentModel.init)
+        let appointments = users.map({
+            $0.appointments.map(AppointmentModel.init)
         }).reduce(into: []) {
             $0 += $1
         }
         return appointments
     }
 }
-
-

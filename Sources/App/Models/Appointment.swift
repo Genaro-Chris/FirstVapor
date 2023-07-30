@@ -45,7 +45,6 @@ final class Appointment: Model, Content {
     @OptionalParent(key: "user")
     var user: User?
 
-
     @Enum(key: "department")
     var dept: Department
 
@@ -57,7 +56,10 @@ final class Appointment: Model, Content {
 
     init() {}
 
-    init(id: UUID? = nil, date: Date, fullname: String, email: String, telephone: UInt, dept: Department, user_id: User.IDValue?) {
+    init(
+        id: UUID? = nil, date: Date, fullname: String, email: String, telephone: UInt,
+        dept: Department, user_id: User.IDValue?
+    ) {
         self.id = id
         self.appointment_date = date
         self.fullname = fullname
@@ -68,19 +70,18 @@ final class Appointment: Model, Content {
     }
 
     var description: String {
-        fullname + "\n" + "\(telephone)"  + "\n" + "\(appointment_date.description)" + "" + "\n" + "\(dept.rawValue)"
+        fullname + "\n" + "\(telephone)" + "\n" + "\(appointment_date.description)" + "" + "\n"
+            + "\(dept.rawValue)"
     }
 
 }
-
 
 extension Appointment: Validatable {
 
     static func validations(_ validations: inout Validations) {
-        validations.add("fullname", as: String.self, is: .ascii, required: true)
+        validations.add("name", as: String.self, is: .ascii, required: true)
         validations.add("email", as: String.self, is: .email && .internationalEmail, required: true)
-        validations.add("telephone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true)
+        validations.add(
+            "phone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true)
     }
 }
-
-

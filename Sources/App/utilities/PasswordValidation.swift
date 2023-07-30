@@ -1,29 +1,29 @@
-import Vapor
 import RegexBuilder
+import Vapor
 
 extension Validator {
     static var strongPassword: Validator<String> {
-       .init { string in
+        .init { string in
             ValidatorResults.StrongPassKey(string)
         }
-    }    
+    }
 }
 
 extension ValidatorResults {
     public struct StrongPassKey {
         var isValidPassKey: Bool
-        init(_ pattern: String)  {
+        init(_ pattern: String) {
             try? Self.matchLowerCase(pattern)
             try? Self.matchUpperCase(pattern)
             try? Self.matchDigits(pattern)
             try? Self.matchSpecialCase(pattern)
-            try? Self.matchCount(pattern, count: 8)    
+            try? Self.matchCount(pattern, count: 8)
             isValidPassKey = Self.failureMessage != "contains" ? false : true
-        }    
+        }
         private let successMessage: String = "is a strong password"
         private static var failureMessage: String = "contains"
 
-        static func matchDigits(_ pattern: String)throws {
+        static func matchDigits(_ pattern: String) throws {
             let numberMatch = Regex {
                 .digit
             }

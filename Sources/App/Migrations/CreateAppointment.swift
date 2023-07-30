@@ -1,6 +1,5 @@
 import Fluent
 
-
 struct CreateAppointment: AsyncMigration {
     func prepare(on database: Database) async throws {
         /* _ = try await database.enum("department")

@@ -23,7 +23,8 @@ enum Blood_Group: String, Codable, CaseIterableWithRawValues {
 
     init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        self = switch try container.decode(String.self) {
+        self =
+            switch try container.decode(String.self) {
             case "AB+": .ABp
             case "A+": .Ap
             case "AB-": .ABm
@@ -31,18 +32,18 @@ enum Blood_Group: String, Codable, CaseIterableWithRawValues {
             case "O+": .Op
             case "O-": .Om
             default: .Ap
-        }
+            }
     }
 
     init?(rawValue: String) {
         switch rawValue {
-            case "AB+": self = .ABp
-            case "A+": self = .Ap
-            case "AB-": self = .ABm
-            case "A-": self = .Am
-            case "O+": self = .Op
-            case "O-": self = .Om
-            default: return nil
+        case "AB+": self = .ABp
+        case "A+": self = .Ap
+        case "AB-": self = .ABm
+        case "A-": self = .Am
+        case "O+": self = .Op
+        case "O-": self = .Om
+        default: return nil
         }
     }
 }
@@ -107,11 +108,14 @@ final class CompleteUser: Model, Content {
     }
 }
 
-
 extension CompleteUser: Validatable {
     static func validations(_ validations: inout Validations) {
-        validations.add("age", as: UInt8.self, is: .range(18...), customFailureDescription: "User must be 18 and above")
-        validations.add("telephone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true, customFailureDescription: "Invalid phone number")
+        validations.add(
+            "age", as: UInt8.self, is: .range(18...),
+            customFailureDescription: "User must be 18 and above")
+        validations.add(
+            "telephone", as: UInt64.self, is: .range(111_111_111_1...999_999_999_9), required: true,
+            customFailureDescription: "Invalid phone number")
         validations.add("fullname", as: String.self, is: .count(4...) && !.empty, required: true)
     }
 }

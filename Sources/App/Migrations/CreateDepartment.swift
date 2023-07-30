@@ -1,6 +1,5 @@
 import Fluent
 
-
 struct CreateDepartment: AsyncMigration {
     func prepare(on database: Database) async throws {
         var enumBuilder = database.enum("department")

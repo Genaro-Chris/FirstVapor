@@ -6,7 +6,6 @@ enum MatchError: Error {
     case lessThanRequired
 }
 
-
-enum ConversionError: Error { 
+enum ConversionError: Error {
     case invalidDate
 }

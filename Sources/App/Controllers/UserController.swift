@@ -23,6 +23,8 @@ struct UserController: RouteCollection {
         }
         user.$details.id = id
         try await user.save(on: request.db)
+        try await user_details.authenticate(request: request)
+        try await user_details.authenticate(sessionID: id, for: request)
         request.session.data["username"] = user.username
         request.session.data["email"] = user_details.email
         return request.redirect(to: "/complete.html")

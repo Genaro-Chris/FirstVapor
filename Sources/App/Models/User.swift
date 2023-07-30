@@ -39,14 +39,13 @@ final class User: Content, Model {
         id: UUID? = nil, username: String,
         con_password: String = "",
         credentials_id: LoginProfile.IDValue
-        ) {
+    ) {
         self.id = id
         self.username = username
         self.con_password = con_password
         self.$details.id = credentials_id
     }
 }
-
 
 extension User: CustomStringConvertible {
     var description: String {
@@ -57,6 +56,10 @@ extension User: CustomStringConvertible {
 extension User: Validatable {
     static func validations(_ validations: inout Validations) {
         validations.add("username", as: String.self, is: !.empty, required: true)
-        validations.add("con-password", as: String.self, is: .strongPassword, required: true, customFailureDescription: "Must contain an uppercase, lowercase, a number and at least a special character and no less than 8 characters")
+        validations.add(
+            "con-password", as: String.self, is: .strongPassword, required: true,
+            customFailureDescription:
+                "Must contain an uppercase, lowercase, a number and at least a special character and no less than 8 characters"
+        )
     }
 }
